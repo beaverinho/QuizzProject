@@ -1,9 +1,3 @@
-import React, { Component } from 'react'
-import './assets/style.css'
-import ReactDOM from 'react-dom'
-import QuestionBox from './components/QuestionBox'
-import Result from './components/Result'
-
 const qBank = [
     {
       question:
@@ -376,71 +370,6 @@ const qBank = [
       questionId: "4982981"
     }
   ];
-
-const selectRandomQuestions = (arr = qBank, n = 5) => {
-  let sortedArray = arr.sort(() => 0.5 - Math.random()).slice(0, n);
-  return sortedArray;
-}
-
-class QuizBee extends Component {
-    
-    state = {
-        questionBank: [],
-        score: 0,
-        responses: 0,
-
-    };
-
-    computeAnswers = (answer, correctAnswer) => {
-      if (answer === correctAnswer) {
-        this.setState({
-          score: this.state.score + 1,
-          
-        })
-      }
-      this.setState({
-        responses: this.state.responses < 5 ? this.state.responses + 1 : 5
-      })
-    } 
-
-    getQuestions = () => {
-        let newArr = selectRandomQuestions(qBank, 5);
-        
-            this.setState({
-                questionBank: [...newArr]
-            })
-    
-    }
-
-    playAgain = () => {
-      this.getQuestions();
-      this.setState ({
-        
-        score: 0,
-        responses: 0,
-      })
-    }
-    
-
-    componentDidMount(){
-        this.getQuestions();
-    }
-
-    render() {
-        return (
-            <div className='container'>
-                <div className='title'>QuizBee</div>
-                {/* this.state.questionBank.length > 0 &&  */}
-                
-                {this.state.questionBank.length > 0 && this.state.responses < 5 && this.state.questionBank.map(({question, answers, correct, questionId}) => (
-                    <QuestionBox
-                        question={question} options={answers} key={questionId} selected={(answer) => this.computeAnswers(answer, correct)}
-                    />))}
-                { this.state.responses == 5  && <Result score={this.state.score} playAgain={this.playAgain}/>}
-            </div>
-        )
-    }
-}
-
-
-ReactDOM.render(<QuizBee />, document.getElementById('root'));
+  
+  export default (n = 5) =>
+    Promise.resolve(qBank.sort(() => 0.5 - Math.random()).slice(0, n));
